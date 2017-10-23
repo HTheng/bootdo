@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.AppraiseDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.AppraiseDO">
+		select `id`,`userID`,`orderID`,`ranks`,`content`,`anonymous`,`appraise_date`,`create_by`,`create_time`,`update_by`,`update_time` from app_appraise where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.AppraiseDO">
+		select `id`,`userID`,`orderID`,`ranks`,`content`,`anonymous`,`appraise_date`,`create_by`,`create_time`,`update_by`,`update_time` from app_appraise
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userid != null and userid != ''"> and userID = #{userid} </if>
+		  		  <if test="orderid != null and orderid != ''"> and orderID = #{orderid} </if>
+		  		  <if test="ranks != null and ranks != ''"> and ranks = #{ranks} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="anonymous != null and anonymous != ''"> and anonymous = #{anonymous} </if>
+		  		  <if test="appraiseDate != null and appraiseDate != ''"> and appraise_date = #{appraiseDate} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_appraise
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userid != null and userid != ''"> and userID = #{userid} </if>
+		  		  <if test="orderid != null and orderid != ''"> and orderID = #{orderid} </if>
+		  		  <if test="ranks != null and ranks != ''"> and ranks = #{ranks} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="anonymous != null and anonymous != ''"> and anonymous = #{anonymous} </if>
+		  		  <if test="appraiseDate != null and appraiseDate != ''"> and appraise_date = #{appraiseDate} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.system.domain.AppraiseDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_appraise
+		(
+			`userID`, 
+			`orderID`, 
+			`ranks`, 
+			`content`, 
+			`anonymous`, 
+			`appraise_date`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		)
+		values
+		(
+			#{userid}, 
+			#{orderid}, 
+			#{ranks}, 
+			#{content}, 
+			#{anonymous}, 
+			#{appraiseDate}, 
+			#{createBy}, 
+			#{createTime}, 
+			#{updateBy}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.system.domain.AppraiseDO">
+		update app_appraise 
+		<set>
+			<if test="userid != null">`userID` = #{userid}, </if>
+			<if test="orderid != null">`orderID` = #{orderid}, </if>
+			<if test="ranks != null">`ranks` = #{ranks}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="anonymous != null">`anonymous` = #{anonymous}, </if>
+			<if test="appraiseDate != null">`appraise_date` = #{appraiseDate}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_appraise where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_appraise where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

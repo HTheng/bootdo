@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.OrdersDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.OrdersDO">
+		select `id`,`orderID`,`productID`,`productName`,`quantity`,`totalPrice`,`orderTime`,`userID`,`infoID`,`status`,`payment`,`delivery`,`remarks`,`create_by`,`create_time`,`update_by`,`update_time` from app_orders where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.OrdersDO">
+		select `id`,`orderID`,`productID`,`productName`,`quantity`,`totalPrice`,`orderTime`,`userID`,`infoID`,`status`,`payment`,`delivery`,`remarks`,`create_by`,`create_time`,`update_by`,`update_time` from app_orders
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="orderid != null and orderid != ''"> and orderID = #{orderid} </if>
+		  		  <if test="productid != null and productid != ''"> and productID = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="quantity != null and quantity != ''"> and quantity = #{quantity} </if>
+		  		  <if test="totalprice != null and totalprice != ''"> and totalPrice = #{totalprice} </if>
+		  		  <if test="ordertime != null and ordertime != ''"> and orderTime = #{ordertime} </if>
+		  		  <if test="userid != null and userid != ''"> and userID = #{userid} </if>
+		  		  <if test="infoid != null and infoid != ''"> and infoID = #{infoid} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="payment != null and payment != ''"> and payment = #{payment} </if>
+		  		  <if test="delivery != null and delivery != ''"> and delivery = #{delivery} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_orders
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="orderid != null and orderid != ''"> and orderID = #{orderid} </if>
+		  		  <if test="productid != null and productid != ''"> and productID = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="quantity != null and quantity != ''"> and quantity = #{quantity} </if>
+		  		  <if test="totalprice != null and totalprice != ''"> and totalPrice = #{totalprice} </if>
+		  		  <if test="ordertime != null and ordertime != ''"> and orderTime = #{ordertime} </if>
+		  		  <if test="userid != null and userid != ''"> and userID = #{userid} </if>
+		  		  <if test="infoid != null and infoid != ''"> and infoID = #{infoid} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="payment != null and payment != ''"> and payment = #{payment} </if>
+		  		  <if test="delivery != null and delivery != ''"> and delivery = #{delivery} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.system.domain.OrdersDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_orders
+		(
+			`orderID`, 
+			`productID`, 
+			`productName`, 
+			`quantity`, 
+			`totalPrice`, 
+			`orderTime`, 
+			`userID`, 
+			`infoID`, 
+			`status`, 
+			`payment`, 
+			`delivery`, 
+			`remarks`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		)
+		values
+		(
+			#{orderid}, 
+			#{productid}, 
+			#{productname}, 
+			#{quantity}, 
+			#{totalprice}, 
+			#{ordertime}, 
+			#{userid}, 
+			#{infoid}, 
+			#{status}, 
+			#{payment}, 
+			#{delivery}, 
+			#{remarks}, 
+			#{createBy}, 
+			#{createTime}, 
+			#{updateBy}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.system.domain.OrdersDO">
+		update app_orders 
+		<set>
+			<if test="orderid != null">`orderID` = #{orderid}, </if>
+			<if test="productid != null">`productID` = #{productid}, </if>
+			<if test="productname != null">`productName` = #{productname}, </if>
+			<if test="quantity != null">`quantity` = #{quantity}, </if>
+			<if test="totalprice != null">`totalPrice` = #{totalprice}, </if>
+			<if test="ordertime != null">`orderTime` = #{ordertime}, </if>
+			<if test="userid != null">`userID` = #{userid}, </if>
+			<if test="infoid != null">`infoID` = #{infoid}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="payment != null">`payment` = #{payment}, </if>
+			<if test="delivery != null">`delivery` = #{delivery}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_orders where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_orders where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

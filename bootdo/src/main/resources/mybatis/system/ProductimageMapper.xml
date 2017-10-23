@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.dao.ProductimageDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.ProductimageDO">
+		select `id`,`productID`,`image`,`locate`,`sort`,`hide`,`create_by`,`create_time`,`update_by`,`update_time` from app_productimage where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.domain.ProductimageDO">
+		select `id`,`productID`,`image`,`locate`,`sort`,`hide`,`create_by`,`create_time`,`update_by`,`update_time` from app_productimage
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productid != null and productid != ''"> and productID = #{productid} </if>
+		  		  <if test="image != null and image != ''"> and image = #{image} </if>
+		  		  <if test="locate != null and locate != ''"> and locate = #{locate} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="hide != null and hide != ''"> and hide = #{hide} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_productimage
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productid != null and productid != ''"> and productID = #{productid} </if>
+		  		  <if test="image != null and image != ''"> and image = #{image} </if>
+		  		  <if test="locate != null and locate != ''"> and locate = #{locate} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="hide != null and hide != ''"> and hide = #{hide} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.system.domain.ProductimageDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_productimage
+		(
+			`productID`, 
+			`image`, 
+			`locate`, 
+			`sort`, 
+			`hide`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		)
+		values
+		(
+			#{productid}, 
+			#{image}, 
+			#{locate}, 
+			#{sort}, 
+			#{hide}, 
+			#{createBy}, 
+			#{createTime}, 
+			#{updateBy}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.system.domain.ProductimageDO">
+		update app_productimage 
+		<set>
+			<if test="productid != null">`productID` = #{productid}, </if>
+			<if test="image != null">`image` = #{image}, </if>
+			<if test="locate != null">`locate` = #{locate}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="hide != null">`hide` = #{hide}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_productimage where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_productimage where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
